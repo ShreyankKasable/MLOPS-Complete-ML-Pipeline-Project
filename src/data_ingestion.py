@@ -28,7 +28,7 @@ logger.addHandler(console_handler)
 logger.addHandler(file_handler)
 
 # LOADING DATA
-def load_data(data_url: str) -> DataFrame :
+def load_data(data_url: str) -> pd.DataFrame :
     """Load data from a csv file"""
     try:
         df = pd.read_csv(data_url)
@@ -75,7 +75,7 @@ def save_data(train_data: pd.DataFrame, test_data: pd.DataFrame, data_path: str)
 # MAIN FUNCTION
 def main():
     try:
-        test_size = 0.2
+        test_size = 0.3
         data_path = 'https://raw.githubusercontent.com/vikashishere/Datasets/main/spam.csv'
         df = load_data(data_url=data_path)
         final_df = preprocess_data(df)
