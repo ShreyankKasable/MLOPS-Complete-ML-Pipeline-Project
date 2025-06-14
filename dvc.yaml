@@ -13,7 +13,7 @@ stages:
     - Data/raw
     - src/data_preprocessing.py
     outs:
-      - Data/interim
+    - Data/interim
   feature_engineering:
     cmd: python src/feature_engineering.py
     deps:
@@ -22,7 +22,7 @@ stages:
     params:
     - feature_engineering.max_features
     outs:
-      - Data/processed
+    - Data/processed
   model_building:
     cmd: python src/model_building.py
     deps:
@@ -32,11 +32,18 @@ stages:
     - model_building.n_estimators
     - model_building.random_state
     outs:
-      - model/model.pkl
+    - model/model.pkl
   model_evaluation:
     cmd: python src/model_evaluation.py
     deps:
     - model/model.pkl
     - src/model_evaluation.py
     metrics:
-      - reports/metrics.json
+    - reports/metrics.json
+metrics:
+- dvclive/metrics.json
+plots:
+- dvclive/plots/metrics:
+    x: step
+params:
+- dvclive/params.yaml

@@ -6,7 +6,7 @@ import json
 from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_auc_score
 import logging
 import yaml
-
+from dvclive import Live
 
 # ENSURE THE "LOGS" DIRECTORY EXISTS
 log_dir = 'logs'
@@ -50,7 +50,7 @@ def load_params(params_path: str) -> dict:
 
 def load_model(file_path: str):
     """
-    Load the trainied model from a file.
+    Load the trained model from a file.
     :param file_path:
     :return:
     """
@@ -131,6 +131,14 @@ def main():
         y_test = test_data.iloc[:, -1].values
 
         metrics = evaluate_model(clf, x_test, y_test)
+
+        # Experiment tracking using dvclive
+        with Live(save_dvc_exp=True) as live:
+            live.log_metric("accuracy", metrics['accuracy'])
+            live.log_metric("precision", metrics['precision'])
+            live.log_metric("recall", metrics['recall'])
+
+            live.log_params(params)
 
         save_metrics(metrics, 'reports/metrics.json')
     except Exception as e:
